@@ -5,6 +5,7 @@
 *.cxx
 *.o
 imgcv.py
+Makefile
 
 # Packages
 *.egg
