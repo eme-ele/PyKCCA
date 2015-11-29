@@ -2,6 +2,9 @@
 
 # C extensions
 *.so
+*.cxx
+*.o
+imgcv.py
 
 # Packages
 *.egg

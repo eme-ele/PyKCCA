@@ -1,4 +1,6 @@
 import numpy
+from sklearn.metrics.pairwise import cosine_similarity
+import imgcv
 
 class DiagGaussianKernel(object):
     def __init__(self, sigma=1.0):
@@ -9,12 +11,12 @@ class DiagGaussianKernel(object):
         :type sigma: :class:`float`
         """
         self.sigma = sigma
-    
+
     def __call__(self, X1, X2):
 
         #if X1.shape[1] != X2.shape[1]:
                     #raise ValueError("Invalid matrix dimentions: " + str(X1.shape) + " " + str(X2.shape))
-                
+
         K = numpy.exp(- numpy.sum( (X1-X2)**2, 1)/(2*self.sigma**2))
         K = numpy.array(K, ndmin=2).T
         return K
@@ -44,7 +46,7 @@ class GaussianKernel(object):
         :param X2: Second set of examples.
         :type X2: :class:`numpy.ndarray`
         """
-        
+
         if X1.shape[1] != X2.shape[1]:
             raise ValueError("Invalid matrix dimentions: " + str(X1.shape) + " " + str(X2.shape))
 
@@ -65,11 +67,11 @@ class GaussianKernel(object):
 
 class PolyKernel(object):
     """
-    A class to find linear kernel evaluations k(x, y) = <x, y> 
+    A class to find linear kernel evaluations k(x, y) = <x, y>
     """
-    def __init__(self, c, p):
+    def __init__(self, c=0, p=2):
         """
-        Intialise class. 
+        Intialise class.
         """
         self.c = c
         self.p = p
@@ -95,3 +97,46 @@ class PolyKernel(object):
 class LinearKernel(PolyKernel):
     def __init__(self):
         super(LinearKernel, self).__init__(0, 1)
+
+
+class BowKernel(object):
+
+    def __init__(self):
+        pass
+
+    def __call__(self, X1, X2):
+
+        if X1.shape[1] != X2.shape[1]:
+            raise ValueError("Invalid matrix dimensions: " + str(X1.shape) + " " + str(X2.shape))
+
+        m = []
+
+        for x1 in X1:
+            ret = []
+            for x2 in X2:
+                sim = cosine_similarity(x1.reshape(1, -1), x2.reshape(1, -1))[0][0]
+                ret.append(sim)
+            m.append(ret)
+        m = numpy.asarray(m)
+        return m
+
+class HistKernel(object):
+
+    def __init__(self):
+        pass
+
+    def __call__(self, X1, X2):
+
+        if X1.shape[1] != X2.shape[1]:
+            raise ValueError("Invalid matrix dimensions: " + str(X1.shape) + " " + str(X2.shape))
+
+        m = []
+        for x1 in X1:
+            ret = []
+            for x2 in X2:
+                x1_hist = imgcv.Features(x1)
+                x2_hist = imgcv.Features(x2)
+                ret.append(imgcv.similarityScore(x1_hist, x2_hist))
+            m.append(ret)
+        m = numpy.asarray(m)
+        return m
