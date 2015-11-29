@@ -31,7 +31,7 @@ imgcv.o: imgcv.cpp
 		$(CPP) $(CPP_FLAGS) $(INCLUDES) $(LIB_INCLUDES) $(LDFLAGS) $(SW_LDFLAGS) $< -o $@
 
 _imgcv.so: $(OBJECTS)
-		$(CPP) $(SW_LDFLAGS) $^ -o $@
+		$(CPP) $(SW_LDFLAGS) $(LDFLAGS) $^ -o $@
 
 
 clean:
