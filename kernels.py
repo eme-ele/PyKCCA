@@ -1,6 +1,6 @@
 import numpy
 from sklearn.metrics.pairwise import cosine_similarity
-import imgcv
+#import imgcv
 
 class DiagGaussianKernel(object):
     def __init__(self, sigma=1.0):
@@ -99,7 +99,7 @@ class LinearKernel(PolyKernel):
         super(LinearKernel, self).__init__(0, 1)
 
 
-class BowKernel(object):
+'''class BowKernel(object):
 
     def __init__(self):
         pass
@@ -139,4 +139,4 @@ class HistKernel(object):
                 ret.append(imgcv.similarityScore(x1_hist, x2_hist))
             m.append(ret)
         m = numpy.asarray(m)
-        return m
+        return m'''

@@ -51,7 +51,7 @@ class KCCA(object):
 
         N = K1.shape[0]
         I = eye(N)
-        Z = numpy.zeros((N,N))    
+        Z = numpy.zeros((N,N))
 
         R1 = numpy.c_[Z, dot(K1, K2)]
         R2 = numpy.c_[dot(K2, K1), Z]
